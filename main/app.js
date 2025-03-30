@@ -1,6 +1,7 @@
 import * as global from "./global.js";
 import * as start from "./start.js";
 import * as keys from "./keys.js";
+import * as screenShudder from "./screenshudder.js";
 
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
@@ -23,6 +24,9 @@ keys.load(global);
 function update() {
     start.update(global);
     keys.update(global);
+    if(global.start.gameStarted){
+        screenShudder.update(global);
+    }
 }
 
 function draw() {
@@ -30,6 +34,9 @@ function draw() {
 
     start.draw(global);
     keys.draw(global);
+    if(global.start.gameStarted){
+        screenShudder.draw(global);
+    }
 }
 
 function gameLoop() {

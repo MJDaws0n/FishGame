@@ -20,6 +20,12 @@ const fishLocation = {
     y: 50,
 };
 
+// Hook cords
+const hookLocation = {
+    x: 50,
+    y: 50,
+};
+
 // Load the fish and also flipped one and hook
 fish.src = fishPath;
 fish.onload = () => fishLoaded++;
@@ -39,7 +45,7 @@ function load(global){
     register = true;
 
     moveHelp = new text.Text('Try moving with A and D', 30, '#fff', global.canvas)
-    avoidHelp = new text.Text('Do Not get hit by the hook', 30, '#fff', global.canvas)
+    avoidHelp = new text.Text('Try not to get hit by the hook', 30, '#fff', global.canvas)
 }
 
 function update(global){
@@ -84,7 +90,7 @@ function draw(global){
             avoidHelp.append(false, true, 0.5, 0.8);
         }
         if(currentText === 3){
-            ctx.drawImage(hook, 100 / 100 * global.canvas.canvas.width, 100 / 100 * global.canvas.canvas.height, 100, 100);
+            ctx.drawImage(hook, (hookLocation.y / 100 * global.canvas.canvas.width), ((-1070 + (hookLocation.x / 100 * global.canvas.canvas.width))), 499 / 4.99, 5649 / 4.99);
         }
     }
 }
