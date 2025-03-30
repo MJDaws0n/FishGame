@@ -7,4 +7,6 @@ const start = {
     gameStarted: false
 }
 
-export { canvas, start };
+var keys = {};
+
+export { canvas, start, keys };

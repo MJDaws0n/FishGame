@@ -16,6 +16,10 @@ function resizeCanvas() {
 window.addEventListener('resize', resizeCanvas);
 resizeCanvas();
 
+// For the files to have a default load behaviour
+start.load(global);
+keys.load(global);
+
 function update() {
     start.update(global);
     keys.update(global);

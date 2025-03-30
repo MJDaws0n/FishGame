@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/content/style/default.css">
+    <title>Redirecting...</title>
+</head>
+<body>
+    <!-- Incase of running in browser. Re-direct to app -->
+    <p>Redirecting...</p>
+    <script> window.location.href = '/app.html'; </script>
+
+    <!-- Incase of no javascript support -->
+    <noscript>
+        <p>It seems javascript is disabled. Please enable it to run this game</p>
+        <a href="/app.html">Redirect anyway</a>
+    </noscript>
+
+    <!-- Incase of javascript it's just not redirect for some reason -->
+    <p>Not redirected? <a href="/app.html">Manualy redirect.</a></p>
+</body>
+</html>
