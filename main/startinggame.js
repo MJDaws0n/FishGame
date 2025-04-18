@@ -11,6 +11,10 @@ let fishLoaded = 0;
 var fishDirection = 0;
 var countFrame = 0;
 var register = false;
+var hookDown = false;
+var fishDead = false;
+var sectionEnded = false;
+var startTime = null;
 
 var currentText = 0;
 
@@ -18,12 +22,13 @@ var currentText = 0;
 const fishLocation = {
     x: 50,
     y: 50,
+    rotation: 0
 };
 
 // Hook cords
 const hookLocation = {
     x: 50,
-    y: 50,
+    y: 10,
 };
 
 // Load the fish and also flipped one and hook
@@ -49,6 +54,9 @@ function load(global){
 }
 
 function update(global){
+    const ctx = global.canvas.ctx;
+    const canvas = global.canvas.canvas;
+
     if(register){
         if(global.keys['a']){
             fishLocation.x = fishLocation.x - 0.2;
@@ -72,15 +80,65 @@ function update(global){
 
     if(countFrame === 60 * 16){
         currentText = 3;
+        hookLocation.y = 20;
+    }
+
+
+    for (let i = 0; i < 30; i++) {
+        if(countFrame === 60 * 18 + i){
+            currentText = 3;
+            hookLocation.y = 20 + i;
+            hookDown = true;
+        }
+    }
+
+    if(hookDown){
+        if(fishLocation.x - 5 < hookLocation.x + 5 && fishLocation.x + 5 > hookLocation.x - 5){
+            fishDead = true;
+        }
+    }
+
+    if(fishDead && !sectionEnded){
+        fishLocation.rotation = fishLocation.rotation+8;
+
+        if(fishLocation.rotation === 360){
+            sectionEnded = true;
+            startTime = performance.now();
+        }
+    }
+
+    if(sectionEnded){
+        const elapsed = 2000 - startTime;
+        const progress = Math.min(elapsed / 2000, 1);
+
+        ctx.fillStyle = `rgba(0, 0, 0, ${progress})`;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        if (progress < 1) {
+            window.location.href = '/actual-app.html';
+        }
     }
 }
 
 function draw(global){
     if(register){
         const ctx = global.canvas.ctx;
+        const canvas = global.canvas.canvas;
+
         if (fishLoaded == 2) {
             const fishImg = fishDirection === 0 ? fish : flippedFish;
-            ctx.drawImage(fishImg, fishLocation.x / 100 * global.canvas.canvas.width, fishLocation.y / 100 * global.canvas.canvas.height, 100, 100);
+
+            // Draw fish with rotation
+            ctx.save();
+            const x = fishLocation.x / 100 * canvas.width;
+            const y = fishLocation.y / 100 * canvas.height;
+            const width = 100;
+            const height = 100;
+        
+            ctx.translate(x + width / 2, y + height / 2);  
+            ctx.rotate(fishLocation.rotation * Math.PI / 180); 
+            ctx.drawImage(fishImg, -width / 2, -height / 2, width, height);
+            ctx.restore();
         }
 
         if(currentText === 1){
@@ -90,7 +148,7 @@ function draw(global){
             avoidHelp.append(false, true, 0.5, 0.8);
         }
         if(currentText === 3){
-            ctx.drawImage(hook, (hookLocation.y / 100 * global.canvas.canvas.width), ((-1070 + (hookLocation.x / 100 * global.canvas.canvas.width))), 499 / 4.99, 5649 / 4.99);
+            ctx.drawImage(hook, (hookLocation.x / 100 * global.canvas.canvas.width), ((-1070 + (hookLocation.y / 100 * global.canvas.canvas.width))), 499 / 4.99, 5649 / 4.99);
         }
     }
 }
